@@ -1,3 +1,6 @@
+import Link from "next/link";
+import Image from "next/image";
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col p-6">
@@ -8,9 +11,28 @@ export default function Home() {
             <br />
             みんなに愛犬画像をシェアしよう。
           </p>
-          <div className="flex items-center gap-5 self-start rounded-lg bg-blue-800 px-6 py-3 text-sm font-medium text-white hover:bg-blue-600">
+          <Link
+            href="/register"
+            className="flex items-center gap-5 self-start rounded-lg bg-blue-800 px-6 py-3 text-sm font-medium text-white hover:bg-blue-600"
+          >
             <span>さっそく始める</span>
-          </div>
+          </Link>
+        </div>
+        <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
+          <Image
+            src="/desktop.png"
+            width={1000}
+            height={620}
+            className="hidden md:block"
+            alt="Desktop Screenshots"
+          />
+          <Image
+            src="/hero-mobile.png"
+            width={560}
+            height={760}
+            className="block md:hidden"
+            alt="Mobile Screenshots"
+          />
         </div>
       </div>
     </main>
