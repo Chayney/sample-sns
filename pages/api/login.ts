@@ -3,6 +3,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "../../prisma/generated/prisma-client"; // ← 生成済みのPrisma Client
 import { serialize } from "cookie";
 
+export const config = {
+    runtime: "nodejs", // ← これを必ず入れる！
+};
+
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
