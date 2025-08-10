@@ -164,6 +164,10 @@ const config = {
         "fromEnvVar": null,
         "value": "debian-openssl-3.0.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -181,6 +185,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -189,8 +194,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "datasource db {\n  provider = \"postgresql\"\n  url      = env(\"POSTGRES_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma-client\"\n}\n\nmodel Post {\n  id        String    @id @default(cuid())\n  image     String\n  caption   String\n  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  userId    String\n  comments  Comment[]\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n\n  @@map(name: \"posts\")\n}\n\nmodel Comment {\n  id        String   @id @default(cuid())\n  text      String\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  userId    String\n  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)\n  postId    String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(name: \"comments\")\n}\n\nmodel User {\n  id          String    @id @default(cuid())\n  name        String\n  email       String    @unique\n  password    String\n  image       String?\n  description String?\n  posts       Post[]\n  comments    Comment[]\n  createdAt   DateTime  @default(now())\n  updatedAt   DateTime  @updatedAt\n\n  @@map(name: \"users\")\n}\n",
-  "inlineSchemaHash": "ade471470674cf053dca4745965a5bb404e3aa70c32ee98884fc2bf1706fa34a",
+  "inlineSchema": "datasource db {\n  provider = \"postgresql\"\n  url      = env(\"POSTGRES_URL\")\n}\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/prisma-client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\nmodel Post {\n  id        String    @id @default(cuid())\n  image     String\n  caption   String\n  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  userId    String\n  comments  Comment[]\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n\n  @@map(name: \"posts\")\n}\n\nmodel Comment {\n  id        String   @id @default(cuid())\n  text      String\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  userId    String\n  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)\n  postId    String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(name: \"comments\")\n}\n\nmodel User {\n  id          String    @id @default(cuid())\n  name        String\n  email       String    @unique\n  password    String\n  image       String?\n  description String?\n  posts       Post[]\n  comments    Comment[]\n  createdAt   DateTime  @default(now())\n  updatedAt   DateTime  @updatedAt\n\n  @@map(name: \"users\")\n}\n",
+  "inlineSchemaHash": "38f2ac419e42af0d6fee98ea8cf8bb33c7dcd3b1b3ab0b292c666b2957c86309",
   "copyEngine": true
 }
 config.dirname = '/'

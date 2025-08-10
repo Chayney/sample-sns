@@ -1,10 +1,10 @@
 // pages/api/login.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "../../prisma/generated/prisma-client"; // ← 生成済みのPrisma Client
 import { serialize } from "cookie";
+import { PrismaClient } from "../../prisma/generated/prisma-client";
 
 export const config = {
-    runtime: "nodejs", // ← これを必ず入れる！
+    runtime: "nodejs", // これにより Edge Function ではなく Node.js で動作します
 };
 
 const prisma = new PrismaClient();
@@ -17,23 +17,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { email, password } = req.body;
 
     try {
-        const user = await prisma.user.findUnique({
-            where: { email },
-        });
-
+        const user = await prisma.user.findUnique({ where: { email } });
         if (!user || user.password !== password) {
             return res.status(401).json({ message: "認証に失敗しました" });
         }
 
-        // セッション的なcookieを発行（簡易な例）
         const cookie = serialize("userEmail", email, {
             path: "/",
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === "production", // 本番環境でのみ Secure 属性を付与
             sameSite: "lax",
             maxAge: 60 * 60 * 24, // 1日
         });
 
+        console.log("Login API: Set-Cookie header:", cookie);
         res.setHeader("Set-Cookie", cookie);
         return res.status(200).json({ message: "ログイン成功" });
     } catch (error) {
