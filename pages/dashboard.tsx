@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import LogoutButton from "../components/logoutButton";
 
 type Post = {
     id: string;
@@ -77,6 +78,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </div>
+            <LogoutButton />
             <div className="my-8 grid grid-cols-3 gap-1 bg-white">
                 {user.posts.slice(0, 3).map((post) => (
                     <Link href={`/posts/${post.id}/edit`} key={post.id}>
